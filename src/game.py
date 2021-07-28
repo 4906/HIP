@@ -1,6 +1,8 @@
-from engine import *
+from src.engine import *
 from config import *
 
+def f_(n):
+    return math.floor(n)
 
 class Move(collections.namedtuple("Move", ["start", "end"])):
     __slots__ = ()
@@ -48,7 +50,7 @@ def getPieceMoves(board, hex, turn):
 
 def getMoves(board, turn, pieces):
     moves = []
-    for i in pieces[(turn + 1) / 2]:
+    for i in pieces[f_((turn + 1) / 2)]:
         moves += [Move(i, j) for j in getPieceMoves(board, i, turn)]
     return moves
 
@@ -109,14 +111,14 @@ def getPieces(board):
     pieces = ([], [])
     for h in board:
         if abs(board[h]) == 2:
-            pieces[(board[h] + 2) / 4].append(h)
+            pieces[f_((board[h] + 2) / 4)].append(h)
     return pieces
 
 
 def getThreatened(turn, pieces):
     temp = []
-    for i in pieces[(-turn + 1) / 2]:
-        if [j in pieces[(turn + 1) / 2] for j in getNeighbors(i)].count(True) >= 2:
+    for i in pieces[f_((-turn + 1) / 2)]:
+        if [j in pieces[f_((turn + 1) / 2)] for j in getNeighbors(i)].count(True) >= 2:
             temp.append(i)
     return temp
 

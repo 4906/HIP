@@ -1,6 +1,10 @@
 import pygame
+import sys
+import config
 from src.replay import *
 
+def f_(n):
+    return math.floor(n)
 
 def removePiece(hex, pieces):
     for i in range(len(pieces)):
@@ -162,7 +166,7 @@ def main():
                         movedPiece = piecePlace(b, Move(selected, current), turn)
                         if movedPiece:
                             removePiece(selected, pieces)
-                            pieces[(turn + 1) / 2].append(current)
+                            pieces[f_((turn + 1) / 2)].append(current)
                         if hasWon(pieces) != 0:
                             currentMove.append(Move(selected, current))
                             if len(currentMove) == 0:

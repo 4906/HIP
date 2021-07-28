@@ -9,7 +9,7 @@
 #     q r  q r    q r  q r (the s's can be derived)
 # in the case of captures, the "to" part is all 1's
 # the file is delimited by a 0 and then enough 1's to fill the byte
-from game import *
+from src.game import *
 import re
 import struct
 from time import gmtime, strftime
