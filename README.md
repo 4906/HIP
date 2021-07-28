@@ -5,7 +5,7 @@ HIP is an interesting board game created by youtuber [pocket83](https://www.yout
 
 ## Installation
 
-1. Install python 2.7.x (latest release) from [here](https://www.python.org/downloads/). The default settings are fine, but if you do mess with it, make sure that pip is included and python gets added to your path.
+1. Install the latest release of python 3 from [here](https://www.python.org/downloads/). The default settings are fine, but if you do mess with it, make sure that pip is included and python gets added to your path.
 2. Install pygame by opening up a shell and typing `pip install pygame`
 3. Have fun playing HIP
 
