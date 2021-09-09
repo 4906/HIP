@@ -103,6 +103,24 @@ def viewReplay(fileName):
             if event.type == pygame.QUIT:
                 return
 
+def drawTimers(surface,timers):
+    if TIMED_MODE == 0 or TIMED_MODE == 1 or TIMED_MODE == 2:
+        words = pygame.font.SysFont(FONT, FONT_SIZE).render(str(round(timers[0]/FRAME_RATE,1)), 0, TEXT_COLOR)
+        wordsRect = words.get_rect()
+        wordsRect.left = 0
+        wordsRect.bottom = WINDOW_HEIGHT
+        surface.blit(words, wordsRect)
+    elif TIMED_MODE == 3:
+        words = pygame.font.SysFont(FONT, FONT_SIZE).render(str(round(timers[0]/FRAME_RATE,1)), 0, TEXT_COLOR)
+        wordsRect = words.get_rect()
+        wordsRect.left = 0
+        wordsRect.bottom = WINDOW_HEIGHT
+        surface.blit(words, wordsRect)
+        words2 = pygame.font.SysFont(FONT, FONT_SIZE).render(str(round(timers[1]/FRAME_RATE,1)), 0, TEXT_COLOR)
+        words2Rect = words2.get_rect()
+        words2Rect.left = 0
+        words2Rect.top = 0
+        surface.blit(words2, words2Rect)
 
 def main():
     b = createBoard(BOARD_SIZE)
@@ -119,14 +137,44 @@ def main():
     currentMove = []
     moveList = []
     pieces = getPieces(b)
+    timers = []
+
+    if TIMED_MODE == 0:
+        timers.append(0)
+    elif TIMED_MODE == 1:
+        timers.append(TIME_LIMIT)
+    elif TIMED_MODE == 2:
+        timers.append(TIME_LIMIT)
+    elif TIMED_MODE == 3:
+        timers.append(TIME_LIMIT)
+        timers.append(TIME_LIMIT)
 
     while True:
         clock.tick(FRAME_RATE)  # throttle cpu
+        if TIMED_MODE == 0:
+            timers[0]+=1
+        elif TIMED_MODE == 1:
+            timers[0]-=1
+            if timers[0] <= 0:
+                return reset(windowSurface, "GAME OVER", l, b, moveList)
+        elif TIMED_MODE == 2:
+            timers[0]-=1
+            if timers[0] <= 0:
+                return reset(windowSurface, "GAME OVER", l, b, moveList)
+        elif TIMED_MODE == 3:
+            if turn == 1:
+                timers[0]-=1
+                if timers[0] <= 0:
+                    return reset(windowSurface, "GAME OVER", l, b, moveList)
+            elif turn == -1:
+                timers[1]-=1
+                if timers[1] <= 0:
+                    return reset(windowSurface, "GAME OVER", l, b, moveList)
         windowSurface.fill(BACKGROUND_COLOR)
         pos = pygame.mouse.get_pos()
         current = pixelToHex(l, Point(pos[0], pos[1]))
         drawBoard(windowSurface, BACKGROUND_COLOR, BOARD_COLOR, l, b)
-
+        drawTimers(windowSurface,timers)
         # Draw held piece
         if selected != None:
             if SHOW_HINTS:
@@ -197,6 +245,8 @@ def main():
                     turn = -turn
                     currentMove = []
                     underAttack = getThreatened(turn, pieces)
+                    if TIMED_MODE==1:
+                        timers[0]=TIME_LIMIT
                 selected = None
                 holdingPiece = False
             elif event.type == pygame.QUIT:

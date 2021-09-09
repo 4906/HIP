@@ -4,7 +4,6 @@ Adaptive graphics:
     fit to window
 UI:
     select and move as alternative to drag
-    game clock
 Content:
     3 player mode
     AI (again)
